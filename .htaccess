@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteCond $1 !^(__files|app) [NC]
+RewriteRule  (.*)  public/$1  [L]
+
+RewriteCond $1  ^(__files)*  [NC]
+RewriteRule ^__files/([^/]+)/([^/]+)/? app/$1/files/$2 [L,NC]	

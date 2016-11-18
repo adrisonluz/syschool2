@@ -1,0 +1,73 @@
+a {
+    text-decoration: none !important;
+}
+
+.bg-yellow, .callout.callout-warning, .alert-warning, .label-warning, .modal-warning .modal-body {
+    background-color: #ffc45e !important;
+}
+
+div.verTurmas{
+    display: none;
+}
+
+#tabela_cadastro td a{
+    font-size: 16px;
+}
+
+.divEntrada, .divSaida, div.change, div.mensalidade{
+    display: none;
+}
+
+.pull-left.info p, .dropdown.user.user-menu .dropdown-toggle span{
+    text-transform: capitalize;
+}
+
+#video{
+    width: 100%;
+}
+
+#canvas{
+    width: 400px;
+    max-width: 100%;
+}
+
+#imagem-preview{
+    text-align: center;
+    padding: 10px;
+    display: none;
+}
+
+#imagem-preview.activeImg{
+    display: block !important;
+}
+
+.box-profile .img-circle {
+    border-radius: 15% !important;
+    width: 80%;
+}
+
+.user-panel > .image > img {
+    width: 100%;
+    max-width: 65px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.pull-left.info {
+    padding-left: 35px;
+}
+
+.navbar-nav > .user-menu .user-image {
+    margin-top: -8px;
+    height: 35px !important;
+    width: 44px;
+    border-radius: 5px;
+}
+
+div.dia_semana, div.hora_inicio, div.hora_fim{
+    display: none;
+}
+
+div.dia_semana.active, div.hora_inicio.active, div.hora_fim.active{
+    display: block;
+}
