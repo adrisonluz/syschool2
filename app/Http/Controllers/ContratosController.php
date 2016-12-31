@@ -32,7 +32,7 @@ class ContratosController extends Controller {
     public function index() {
         $pageTitle = 'Contratos';
 
-        $contratos = Contrato::all();
+        $contratos = Contrato::where('lixeira', '=', null)->groupBy('usuario_id')->orderBy('versao', 'desc')->get();
         $alunos = Usuario::where(['nivel' => 'aluno', 'lixeira' => null])->get();
 
         if (Session::has('alert')) {
@@ -42,7 +42,6 @@ class ContratosController extends Controller {
         }
 
         $this->arrayReturn += [
-            'alunos' => $alunos,
             'contratos' => $contratos,
             'page_title' => $pageTitle,
             'mapList' => $this->mapList,

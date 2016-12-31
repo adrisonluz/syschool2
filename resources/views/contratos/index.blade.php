@@ -6,28 +6,28 @@
 <div class="alert alert-warning alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Atenção!</h4>
-    
-     <form action="{{ url('usuarios/' . Session::get('contrato_id')) }}" method="POST">
-         <div class="row">
-         <div class="form-group col-md-10">
-         {!! csrf_field() !!}
-        {!! method_field('DELETE') !!}
-        
-        <label>
-            {{ Session::get('excluir') }}
-        </label>
-        </div>
 
-        <div class="form-group col-md-2">
-            <a href='{{ url('contratos') }}' class="btn btn-info">
-                <i class="fa fa-close"></i> Não
-            </a>
-            &nbsp;
-            <button type="submit" class="btn btn-danger">
-                <i class="fa fa-trash"></i> Sim
-            </button>
+    <form action="{{ url('usuarios/' . Session::get('contrato_id')) }}" method="POST">
+        <div class="row">
+            <div class="form-group col-md-10">
+                {!! csrf_field() !!}
+                {!! method_field('DELETE') !!}
+
+                <label>
+                    {{ Session::get('excluir') }}
+                </label>
+            </div>
+
+            <div class="form-group col-md-2">
+                <a href='{{ url('contratos') }}' class="btn btn-info">
+                    <i class="fa fa-close"></i> Não
+                </a>
+                &nbsp;
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> Sim
+                </button>
+            </div>
         </div>
-         </div>
     </form>
 </div>
 @endif
@@ -71,48 +71,38 @@
                 </div>
             </div>
             <div class="box-body">
-                @if(count($contratos) > 1)
+                @if(count($contratos) > 0)
                 <table id="tabela_cadastro" class="table  table-striped" cellspacing="0">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
-                            <th>Idade</th>
-                            <th>Nascimento</th>
-                            <!--th>Telefone</th-->
-                            <th>Ação</th>
+                            <th>Versão Atual</th>
+                            <th>Criação</th>
+                            <th>Emissão</th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Idade</th>
-                        <th>Nascimento</th>
-                        <!--th>Telefone</th-->
-                        <th>Ação</th>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Versão Atual</th>
+                            <th>Criação</th>
+                            <th>Emissão</th>
+                        </tr>
                     </tfoot>
                     <tbody>
                         @foreach($contratos as $contrato)
                         <tr>
                             <td>
-                                {{ $aluno['id'] }}
+                                {{ $contrato->id }}
                             </td>
                             <td>
-                                <a href="usuarios/{{ $aluno['id'] }}" title="{{ $aluno['nome'] }} perfil ">{{ $aluno['nome'] }}</a>
+                                <a href="usuarios/{{ $contrato->usuario_id }}" title="{{ $contrato->usuario->nome }} perfil ">{{ $contrato->usuario->nome }}</a>
                             </td>
-                            <td>
-                                {{ $aluno['idade'] }}
-                            </td>
-                            <td>
-                                {{ $aluno['nascimento'] }}
-                            </td>
-                            <!--td>
-                                {{ $aluno['celular'] }}
-                            </td-->
-                            <td>
-                                <a href="{{ url('usuarios/' . $aluno['id'] . '/edit/') }}" title="Editar" ><i class="fa fa-edit"></i></a>
-                                <a href="{{ url('usuarios/excluir/' . $aluno['id']) }}" title="Excluir" ><i class="fa fa-trash"></i></a>
-                            </td>
+                            <td>{{ $contrato->versao }}</td>
+                            <td>{{ $contrato->criacao }}</td>
+                            <td>{{ $contrato->emissao }}</td>
                         </tr>
                         @endforeach
                     </tbody>
