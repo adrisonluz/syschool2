@@ -6,3 +6,4 @@ Homestead.json
 .env
 /storage/app
 /storage/app/*
+/resources/contratos/doc.php
