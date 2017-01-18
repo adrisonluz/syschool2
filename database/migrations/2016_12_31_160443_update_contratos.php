@@ -21,7 +21,7 @@ class UpdateContratos extends Migration {
         });
 
         Schema::table('contratos', function (Blueprint $table) {
-            $table->string('json', 255)->nullable();
+            $table->mediumText('json')->nullable();
             $table->string('versao', 45)->nullable();
         });
     }

@@ -7,7 +7,7 @@
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-check"></i> Atenção!</h4>
 
-    <form action="{{ url('usuarios/' . Session::get('contrato_id')) }}" method="POST">
+    <form action="{{ url('contratos/' . Session::get('contrato_id')) }}" method="POST">
         <div class="row">
             <div class="form-group col-md-10">
                 {!! csrf_field() !!}
@@ -80,6 +80,7 @@
                             <th>Versão Atual</th>
                             <th>Criação</th>
                             <th>Emissão</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -89,6 +90,7 @@
                             <th>Versão Atual</th>
                             <th>Criação</th>
                             <th>Emissão</th>
+                            <th>Ação</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -103,6 +105,11 @@
                             <td>{{ $contrato->versao }}</td>
                             <td>{{ $contrato->criacao }}</td>
                             <td>{{ $contrato->emissao }}</td>
+                            <td>
+                                <a href="{{ url('contratos/' . $contrato->id) }}" title="Ver" ><i class="fa fa-eye"></i></a>
+                                &nbsp;&nbsp;
+                                <a href="{{ url('contratos/imprimir/' . $contrato->id) }}" title="Emitir" ><i class="fa fa-print"></i></a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
