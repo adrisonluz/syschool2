@@ -47,3 +47,21 @@ if(!function_exists('data')){
         }
     }
 }
+
+if (!function_exists('getDiaSemana')) {
+
+    function getDiaSemana($dia) {
+        $semanaArray = [
+            'Sun' => 'domingo',
+            'Mon' => 'segunda',
+            'Tue' => 'terça',
+            'Wed' => 'quarta',
+            'Thu' => 'quinta',
+            'Fri' => 'sexta',
+            'Sat' => 'sábado'  
+        ];
+
+        return $semanaArray[$dia];
+    }
+
+}

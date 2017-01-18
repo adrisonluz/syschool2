@@ -16,4 +16,11 @@ class Contrato extends Model {
         return $this->belongsTo('App\Usuario', 'usuario_id');
     }
 
+    /**
+    * Versões
+    */
+    public function versoes() {
+        $versoes = $this->where('usuario_id', '=', $this->usuario_id)->get();
+        return $versoes;
+    }
 }

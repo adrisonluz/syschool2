@@ -25,6 +25,7 @@ Route::group(['middlewareGroups' => ['web']], function () {
 
     /*     * * Contratos ** */
     Route::get('contratos/excluir/{id}', 'ContratosController@excluir');
+    Route::get('contratos/imprimir/{id}', 'ContratosController@printContrato');
     Route::resource('contratos', 'ContratosController');
 
     /*     * * Turmas ** */

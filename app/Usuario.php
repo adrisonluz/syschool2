@@ -122,5 +122,34 @@ class Usuario extends Authenticatable {
             return true;
         }
     }
+    
+    /**
+    * Calcula mensalidade total do aluno
+    */
+    public function mensalidade() {
+        $matriculas = Matricula::where('usuario_id', $this->id)->get();
 
+        $total = 0;
+        foreach ($matriculas as $matricula) {
+            $turma = Turma::find($matricula->turma_id);
+            $total = ($total + $turma->mensalidade);
+        }
+
+        return $total;
+    }
+    
+    /**
+    * Total de aulas 
+    */
+    public function totalAulas() {
+        $matriculas = Matricula::where('usuario_id', $this->id)->get();
+
+        $total = 0;
+        foreach ($matriculas as $matricula) {
+            $turma = Turma::find($matricula->turma_id);
+            $total = ($total + ($turma->curso->qtd_aulas - $turma->aulas_dadas));
+        }
+
+        return $total;
+    }
 }

@@ -42,7 +42,7 @@ class Turma extends Model {
      */
 
     public function horarios() {
-        return $this->hasMany('App\Horario', 'id');
+        return $this->hasMany('App\Horario', 'turma_id');
     }
 
     /**
