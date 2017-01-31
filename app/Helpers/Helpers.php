@@ -14,7 +14,7 @@ if (!function_exists('getIdade')) {
 }
 
 if(!function_exists('consultaCEP')) {
-    
+
     function consultaCEP($cep = ''){
         $reg = simplexml_load_file("http://cep.republicavirtual.com.br/web_cep.php?formato=xml&cep=" . $cep);
 
@@ -30,10 +30,10 @@ if(!function_exists('consultaCEP')) {
 
 
 if(!function_exists('data')){
-    
+
     function data($data, $inverte = true){
 	$format = '/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/';
-        
+
         switch($inverte){
             case true:
                 $dataFormatada = date('d/m/Y', strtotime($data));
@@ -58,10 +58,45 @@ if (!function_exists('getDiaSemana')) {
             'Wed' => 'quarta',
             'Thu' => 'quinta',
             'Fri' => 'sexta',
-            'Sat' => 'sábado'  
+            'Sat' => 'sábado'
         ];
 
         return $semanaArray[$dia];
     }
 
+}
+
+/**
+* Função para gerar url amigável
+*/
+if (! function_exists('setUri')) {
+
+  function setUri($string){
+    $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
+		$b = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                 ';
+		$string = utf8_decode($string);
+		$string = strtr($string, utf8_decode($a), $b);
+		$string = strip_tags(trim($string));
+		$string = str_replace(" ","-",$string);
+		$string = str_replace(array("-----","----","---","--"),"-",$string);
+		return strtolower(utf8_encode($string));
+  }
+}
+
+/**
+* Função para gerar resumos
+*/
+if (! function_exists('lmWord')) {
+  function lmWord($string, $words = '100'){
+    $string 	= strip_tags($string);
+    $count		= strlen($string);
+
+    if($count <= $words){
+      return $string;
+    }else{
+      $strpos = strrpos(substr($string,0,$words),' ');
+      return substr($string,0,$strpos).' ...';
+    }
+
+  }
 }
