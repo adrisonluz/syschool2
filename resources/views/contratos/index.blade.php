@@ -108,6 +108,8 @@
                             <td>
                                 <a href="{{ url('contratos/' . $contrato->id) }}" title="Ver" ><i class="fa fa-eye"></i></a>
                                 &nbsp;&nbsp;
+                                <a href="{{ url('contratos/versoes/' . $contrato->id) }}" title="Versões" ><i class="fa fa-sort-numeric-asc"></i></a>
+                                &nbsp;&nbsp;
                                 <a href="{{ url('contratos/imprimir/' . $contrato->id) }}" title="Emitir" ><i class="fa fa-print"></i></a>
                             </td>
                         </tr>

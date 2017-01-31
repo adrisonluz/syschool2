@@ -8,7 +8,7 @@ use App\Usuario;
 use App\Contrato;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use DOMPDF;
 
 class ContratosController extends Controller {
@@ -37,7 +37,7 @@ class ContratosController extends Controller {
         $contratos = Contrato::orderBy('versao', 'desc')
                     ->get()
                     ->unique('usuario_id');
-        
+
         $alunos = Usuario::where(['nivel' => 'aluno', 'lixeira' => null])->get();
 
         if (Session::has('alert')) {
@@ -104,20 +104,20 @@ class ContratosController extends Controller {
             $contrato->usuario_id = $request->get('usuario_id');
             $contrato->criacao = date('d/m/Y');
             $contrato->emissao = date('d/m/Y');
-            
+
             $usuario = Usuario::find($contrato->usuario_id);
-            
+
             if ($usuario->idade < 18){
                 $usuario->nome .= '</strong> responsável <strong>' . $usuario->nome_boleto;
                 $usuario->cpf = $usuario->cpf_boleto;
             }
-            
+
             $aulas = '';
             $horarios = '';
             if(count($contrato->usuario->matricula) > 0){
                 foreach($contrato->usuario->matricula as $turma){
                     $aulas .= $turma->curso->nome . ', ';
-                    
+
                     foreach($turma->horarios as $horario){
                         $semana = getDiaSemana($horario->dia_semana) . 's ';
                         $semana .= 'das ' . $horario->hora_inicio . ' às ' . $horario->hora_fim . ', ';
@@ -128,7 +128,7 @@ class ContratosController extends Controller {
                 $aulas = '<b class="text-red">(O ALUNO NÃO ENCONTRA-SE MATRICULADO EM NENHUM CUSRO NO MOMENTO)</b>';
                 $horarios = '<b class="text-red">(O ALUNO NÃO ENCONTRA-SE MATRICULADO EM NENHUM CUSRO NO MOMENTO)</b>';
             }
-            
+
             $getVersao = Contrato::where('usuario_id','=',$usuario->id)->get();
             $versao = 1;
             if(count($getVersao) > 0){
@@ -136,7 +136,7 @@ class ContratosController extends Controller {
                 $versao = $ultimaVersao->versao + 1;
             }
             $contrato->versao = $versao;
-                    
+
             $data = [
                 'usuario' => [
                     'nome' => $usuario->nome,
@@ -155,7 +155,7 @@ class ContratosController extends Controller {
                 'data' => $request->get('data'),
                 'versao' => $versao
             ];
-            $contrato->json = json_encode($data);            
+            $contrato->json = json_encode($data);
             $contrato->save();
 
             // redirect
@@ -172,15 +172,15 @@ class ContratosController extends Controller {
      */
     public function show($id) {
         $contrato = Contrato::find($id);
-        
+
         if(!$contrato) {
             Session::flash('error', 'Contrato não encontrado.');
             return redirect($this->area);
         }
-        
+
         $pageTitle = 'Contrato ' . $contrato->usuario->nome. ' v. ' . $contrato->versao;
         $data = json_decode($contrato->json);
-    
+
         $this->arrayReturn += [
             'contrato' => $contrato,
             'data' => $data,
@@ -309,29 +309,47 @@ class ContratosController extends Controller {
         Session::flash('success', 'Contrato excluído com sucesso.');
         return redirect($this->area);
     }
-    
-    public function printContrato($id) {
+
+    public function imprimir($id) {
         $contrato = Contrato::find($id);
-        
+
         if(!$contrato) {
             Session::flash('error', 'Contrato não encontrado.');
             return redirect($this->area);
         }
-       
+
         $data = json_decode($contrato->json);
-    
+
         $this->arrayReturn += [
             'contrato' => $contrato,
             'data' => $data
-        ];        
-        
-        $pdf = new Dompdf();
-        $pdf->set_paper('A4', 'landscape');
-        $pdf->load_html(view($this->area . '.doc', $this->arrayReturn));
-        //$pdf->render();
-        //$pdf = App::make('dompdf.wrapper',array());
+        ];
 
-        $pdf->stream('contrato_' . str_replace('_', ' ', ($contrato->usuario->nome)) . '.pdf');
+        $pdf = new Dompdf();
+        $pdf->set_paper('A4', 'portrait');
+       //return view($this->area.'.print', $this->arrayReturn);
+        $pdf->load_html(view($this->area.'.print', $this->arrayReturn));
+        $pdf->render();
+
+        $pdf->stream('contrato_' . setUri($contrato->usuario->nome) . '_v' . $data->versao . '.pdf');
     }
 
+    public function versoes($id)
+    {
+        $contratoAtual = Contrato::find($id);
+
+        if(!$contratoAtual) {
+            Session::flash('error', 'Contrato não encontrado.');
+            return redirect($this->area);
+        }
+
+        $pageTitle = 'Contrato ' . $contratoAtual->usuario->nome;
+        $this->arrayReturn += [
+            'contratoAtual' => $contratoAtual,
+            'page_title' => $pageTitle,
+            'mapList' => $this->mapList
+        ];
+
+        return view($this->area . '.versoes', $this->arrayReturn);
+    }
 }

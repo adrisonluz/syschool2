@@ -98,4 +98,7 @@
   'ionicons' => array(
     'normal' => DOMPDF_FONT_DIR . '9af347239d026b73b74a4c2b919a03b1',
   ),
+  'fontawesome' => array(
+    'normal' => DOMPDF_FONT_DIR . '858c8295bbe0626798fef38f75b88485',
+  ),
 ) ?>
