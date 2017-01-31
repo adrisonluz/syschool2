@@ -6,6 +6,6 @@ Homestead.json
 .env
 /storage/app
 /storage/app/*
-/resources/contratos/doc.blade.php
-/resources/contratos/print.blade.php
+resources/contratos/doc.blade.php
+resources/contratos/print.blade.php
 /nbproject/*
