@@ -8,4 +8,4 @@ Homestead.json
 /storage/app/*
 resources/views/contratos/doc.blade.php
 resources/views/contratos/print.blade.php
-/nbproject/*
+nbproject/*
