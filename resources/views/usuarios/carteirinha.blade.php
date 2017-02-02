@@ -55,7 +55,7 @@
             }
 
             .crt_code img{
-                width: 85%;
+                width: 70%;
             }
 
             .crt_nome {
@@ -82,12 +82,11 @@
                     <td colspan="2"><h1>Escolda De Dança Aline Rosa</h1></td>
                 </tr>
                 <tr>
-                    <td><div class="crt_foto"><img src="{{ asset($usuario->foto == '' ? '/assets/img/default.png' : 'perfil/' . $usuario->foto ) }}" /></div></td>
+                    <td width="120"><div class="crt_foto"><img src="{{ asset($usuario->foto == '' ? '/assets/img/default.png' : 'perfil/' . $usuario->foto ) }}" /></div></td>
                     <td><div class="crt_code"><img src="{{ asset('qrcode/perfil_' . $usuario->id . '.png') }}" /></div></td>
                 </tr>
                 <tr>
-                    <td><p class="crt_nome">{{$usuario->nome}}</p></td>
-                    <td></td>
+                    <td colspan="2"><p class="crt_nome">{{$usuario->nome}}</p></td>
                 </tr>
             </table>
             <button class="btn btn-primary" onclick="javascript:window.print();">Imprimir</button>
