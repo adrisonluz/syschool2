@@ -240,7 +240,7 @@
 
                 <div class="form-group">
                     <label for="cadastro">Valor da anuidade</label>
-                    <input class="form-control formDin" name="anuidade" placeholder="Valor" value="{{ $turma->mensalidade }}">
+                    <input class="form-control formDin" name="anuidade" placeholder="Valor" value="{{ $turma->anuidade }}">
                 </div>
 
                 <div class="box-footer">

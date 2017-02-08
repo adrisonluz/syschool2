@@ -1,5 +1,4 @@
-function numeroParaMoeda(n, c, d, t)
-{
+function numeroParaMoeda(n, c, d, t) {
     c = isNaN(c = Math.abs(c)) ? 2 : c, d = d == undefined ? "," : d, t = t == undefined ? "." : t, s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 }
@@ -229,6 +228,39 @@ $(document).ready(function(){
                 $('input[name=endereco]').val('CEP inválido');
                 $('input[name=bairro]').val('CEP inválido');
                 $('input[name=cidade]').val('CEP inválido');
+            }
+        });
+        
+        return false;
+    });
+    
+    /* Executa a requisição quando o campo aluno for escolhido em contratos */
+    $(document).on('change', 'select.desconto', function(e){
+        ajax(e, 'getDesconto', 'usuario_id=' + $('select.desconto').val(), function(result){
+            console.log(result);
+            if(result.anuidade == '0,00'){
+                $('div.desconto').html('<p class="alert alert-warning alert-dismissable"><button type="button" class="close" style="color:#ffffff;opacity:1;" data-dismiss="alert" aria-hidden="true">×</button><i class="icon fa fa-warning"></i> Aluno não matrículado.</p>');
+                
+                $('input.anuidade').val('');
+                $('input[name=anuidade]').val('');
+                $('.tabela_anuidades').slideUp();
+            }else{
+                $('div.desconto').html('<p class="alert alert-success alert-dismissable"><button type="button" class="close" style="color:#ffffff;opacity:1;" data-dismiss="alert" aria-hidden="true">×</button><i class="icon fa fa-check"></i>'
+                   + result.desc_desconto
+                + '</p>');
+
+                $('.tabela_anuidades tbody').html('');
+                
+                for (var key in result.turmas) {
+                    var obj = result.turmas[key];
+                    $('.tabela_anuidades tbody').append('<tr><td>' + obj.turma + '</td>'
+                            + '<td>' + obj.anuidade + '</td></tr>');
+                }
+                
+                $('.total_anuidade').html(result.anuidade);
+                $('.tabela_anuidades').slideDown();
+                $('input.anuidade').val(result.anuidade);
+                $('input[name=anuidade]').val(result.anuidade);
             }
         });
         

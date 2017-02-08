@@ -27,6 +27,7 @@ Route::group(['middlewareGroups' => ['web']], function () {
     Route::get('contratos/excluir/{id}', 'ContratosController@excluir');
     Route::get('contratos/imprimir/{id}', 'ContratosController@imprimir');
     Route::get('contratos/versoes/{id}', 'ContratosController@versoes');
+    Route::post('contratos/getDesconto', 'ContratosController@getDesconto');
     Route::resource('contratos', 'ContratosController');
 
     /** Agenda **/

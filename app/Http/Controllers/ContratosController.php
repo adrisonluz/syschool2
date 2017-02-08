@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Usuario;
 use App\Contrato;
+use App\Matricula;
+use App\Turma;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use DOMPDF;
+
 
 class ContratosController extends Controller {
 
@@ -136,6 +139,16 @@ class ContratosController extends Controller {
                 $versao = $ultimaVersao->versao + 1;
             }
             $contrato->versao = $versao;
+            
+            // Conversão de 0,00 para 0.00
+            $anuidade = str_replace(',','.',(str_replace('.','',$request->get('anuidade'))));    
+
+            // Se houver descontos atualiza o valor da anuidade
+            if($request->get('desconto'))
+                $anuidade = ($anuidade - str_replace(',','.',(str_replace('.','',$request->get('desconto')))));
+            
+            // Valor em 0.00 / parcelas
+            $valor_parcela = $anuidade / $request->get('parcelas');
 
             $data = [
                 'usuario' => [
@@ -147,9 +160,9 @@ class ContratosController extends Controller {
                 ],
                 'aulas' => $aulas,
                 'horarios' => $horarios,
-                'valor_parcela' => number_format(($request->get('anuidade') / $request->get('parcelas')), 2, ',', '.'),
+                'valor_parcela' => number_format($valor_parcela, 2, ',', '.'),
                 'total_aulas' => $usuario->totalAulas(),
-                'anuidade' => $request->get('anuidade'),
+                'anuidade' => number_format($anuidade, 2, ',', '.'),
                 'meses' => $request->get('meses'),
                 'parcelas' => $request->get('parcelas'),
                 'data' => $request->get('data'),
@@ -232,59 +245,7 @@ class ContratosController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $rules = array(
-            'professor_id' => 'required',
-            'curso_id' => 'required',
-            'dias' => 'required',
-            'horario' => 'required',
-            'vagas' => 'required',
-        );
-
-        $validator = Validator($request->all(), $rules);
-
-        // process the login
-        if ($validator->fails()) {
-            return redirect($this->area . '/' . $id . '/edit')
-                            ->withErrors($validator)
-                            ->withInput($request->all());
-        } else {
-            // store
-            $turma = Turma::find($id);
-
-            $turma->professor_id = $request->get('professor_id');
-            $turma->curso_id = $request->get('curso_id');
-            $turma->dias = $request->get('dias');
-            $turma->horario = $request->get('horario');
-            $turma->vagas = $request->get('vagas');
-            $turma->aulas_dadas = $request->get('aulas_dadas');
-            $turma->valor_mensalidade = $request->get('valor_mensalidade');
-            //$turma->id_agent = $request->get('id_agent');
-
-            $alunos = $request->get('alunos');
-            if ($alunos !== null) {
-                foreach ($alunos as $value) {
-
-                    $verificaMatricula = Matricula::where(['aluno_id' => $value, 'turma_id' => $id])->get();
-
-                    if (count($verificaMatricula) > 0) {
-                        foreach ($verificaMatricula as $matriculaEncontrada) {
-                            Matricula::destroy($matriculaEncontrada->id);
-                        }
-                    }
-
-                    $matricula = new Matricula;
-                    $matricula->turma_id = $id;
-                    $matricula->aluno_id = $value;
-                    $matricula->save();
-                }
-            }
-
-            $turma->save();
-
-            // redirect
-            Session::flash('success', 'Turma editada com sucesso!');
-            return redirect($this->area);
-        }
+        
     }
 
     public function excluir(Request $request, $id) {
@@ -350,5 +311,55 @@ class ContratosController extends Controller {
         ];
 
         return view($this->area . '.versoes', $this->arrayReturn);
+    }
+    
+    public function getDesconto($usuario_id = '') {
+        $usuario_id = (!empty($_POST['usuario_id']) ? $_POST['usuario_id'] : $usuario_id);
+        
+        if($usuario_id == '')
+            die;
+
+        $usuario = Usuario::find($usuario_id);
+        $matriculas = Matricula::where('usuario_id', $usuario_id)->get()->toArray();
+        
+        $anuidades = [];
+        $descTurmas = [];
+        
+        foreach ($matriculas as $matricula) {
+            $turma = Turma::find($matricula['turma_id']);
+            $descTurmas[] = [
+                'turma' => $turma->curso->nome . ' | ' . $turma->modulo->nome . ' | ' . $turma->professor->nome,
+                'anuidade' => $turma->anuidade
+            ];
+            
+            $anuidades[] = str_replace(',','.',str_replace('.','',$turma->anuidade));
+        }
+        
+        $anuidade = array_sum($anuidades);
+        //dd($anuidades);
+        switch ($usuario->desconto) {
+            case 'familia':
+            case 'fidelidade':
+                $descDesconto = ' 40% sobre o menor valor de anuidade matriculada.';
+                break;
+            case 'isento':
+                $descDesconto = ' 100% sobre todo o valor.';
+                break;
+            case 'auxilio':
+                $descDesconto = ' Bolsa no valor de R$ 75,00.';
+                break;
+            default:
+                $descDesconto = ' nenhum';
+                //$boleto->valor = $valor;
+                break;
+        }
+
+        $retorno = [
+            'desc_desconto' => 'Desconto: ' . $descDesconto,
+            'turmas' => $descTurmas,
+            'anuidade' => number_format($anuidade, 2, ',', '.')
+        ];
+
+        return json_encode($retorno);
     }
 }

@@ -98,7 +98,7 @@ class TurmasController extends Controller {
             'curso_id' => 'required',
             'modulo_id' => 'required',
             'vagas' => 'required',
-            'mensalidade' => 'required'
+            'anuidade' => 'required'
         );
 
         $validator = Validator($request->all(), $rules);
@@ -116,7 +116,7 @@ class TurmasController extends Controller {
             $turma->horario = $request->get('horario');
             $turma->vagas = $request->get('vagas');
             $turma->aulas_dadas = $request->get('aulas_dadas');
-            $turma->mensalidade = $request->get('mensalidade');
+            $turma->anuidade = $request->get('anuidade');
             //$turma->id_agent = $request->get('id_agent');
 
             $turma->save();
@@ -238,7 +238,7 @@ class TurmasController extends Controller {
             'curso_id' => 'required',
             'modulo_id' => 'required',
             'vagas' => 'required',
-            'mensalidade' => 'required'
+            'anuidade' => 'required'
         );
 
         $validator = Validator($request->all(), $rules);
@@ -259,7 +259,7 @@ class TurmasController extends Controller {
             $turma->horario = $request->get('horario');
             $turma->vagas = $request->get('vagas');
             $turma->aulas_dadas = $request->get('aulas_dadas');
-            $turma->mensalidade = $request->get('mensalidade');
+            $turma->anuidade = $request->get('anuidade');
             //$turma->id_agent = $request->get('id_agent');
 
             $alunos = $request->get('alunos');
@@ -357,7 +357,7 @@ class TurmasController extends Controller {
                 $boleto->usuario_id = $aluno->usuario_id;
                 $boleto->data_vencimento = date('d/m/Y', strtotime(date('Y-m-d') . '+5 day'));
                 $boleto->data_emissao = date('d/m/Y');
-                $boleto->referencia = 'mensalidade';
+                $boleto->referencia = 'anuidade';
                 $boleto->competencia = date('m/Y');
                 $seq = date('dmyHi') . $usuario->id;
                 $boleto->sequencial = $seq;
@@ -367,21 +367,21 @@ class TurmasController extends Controller {
                 $matriculas = Matricula::where('usuario_id', $aluno->usuario_id)->get()->toArray();
 
                 foreach ($matriculas as $matricula) {
-                    $mensalidades[] = Turma::select('mensalidade')->find($matricula['turma_id'])->toArray();
+                    $anuidades[] = Turma::select('anuidade')->find($matricula['turma_id'])->toArray();
                 }
 
                 $valor = 0;
-                foreach ($mensalidades as $mensalidade => $valorMensal) {
-                    $valores[] = $valorMensal['mensalidade'];
-                    $valor = $valor + $valorMensal['mensalidade'];
+                foreach ($anuidades as $anuidade => $valorMensal) {
+                    $valores[] = $valorMensal['anuidade'];
+                    $valor = $valor + $valorMensal['anuidade'];
                 }
 
                 switch ($usuario->desconto) {
                     case 'familia':
                     case 'fidelidade':
-                        $descontoMensalidade = ((int) min($valores)) * 0.40;
-                        $boleto->valor = ((int) $valor) - $descontoMensalidade;
-                        $boleto->desconto = $descontoMensalidade;
+                        $descontoAnuidade = ((int) min($valores)) * 0.40;
+                        $boleto->valor = ((int) $valor) - $descontoAnuidade;
+                        $boleto->desconto = $descontoAnuidade;
                         break;
                     case 'isento':
                         $boleto->valor = '00.00';
