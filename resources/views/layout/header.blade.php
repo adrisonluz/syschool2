@@ -117,29 +117,37 @@
                         <li class="user-header">
                             <img src="{{ asset($usuarioLogado->foto == '' ? '/assets/img/default.png' : 'perfil/' . $usuarioLogado->foto ) }}" class="img-circle" alt="User Image" />
                             <p>
-                                Aline Rosa
-                                <small>Member since Nov. 2012</small>
+                                {{ $usuarioLogado->nome }}
+                                <small>
+                                    @if($usuarioLogado->nivel == 'aluno')
+                                    Aluno
+                                    @endif
+                                    
+                                    @if($usuarioLogado->nivel == 'aluno_prof')
+                                    Aluno / Professor
+                                    @endif
+                                    
+                                    @if($usuarioLogado->nivel == 'prof_func')
+                                    Professor / Funcionário
+                                    @endif
+                                    
+                                    @if($usuarioLogado->nivel == 'sec')
+                                    Secretaría
+                                    @endif
+                                    
+                                    @if($usuarioLogado->nivel == 'admin')
+                                    Administrador
+                                    @endif                                    
+                                </small>
                             </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{url('usuarios/' . $usuarioLogado->id )}}" class="btn btn-default btn-flat">Perfil</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="/logout" class="btn btn-default btn-flat">Sair</a>
                             </div>
                         </li>
                     </ul>
