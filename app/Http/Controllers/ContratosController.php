@@ -86,10 +86,10 @@ class ContratosController extends Controller {
 
         $rules = array(
             'usuario_id' => 'required',
-            'valor_matricula' => 'required',
+            'anuidade' => 'required',
             'data' => 'required',
             'meses' => 'required',
-            'mensalidades' => 'required'
+            'parcelas' => 'required'
         );
 
         $validator = Validator($request->all(), $rules);
@@ -147,11 +147,11 @@ class ContratosController extends Controller {
                 ],
                 'aulas' => $aulas,
                 'horarios' => $horarios,
-                'valor_mensalidade' => number_format($usuario->mensalidade(), 2, ',', '.'),
+                'valor_parcela' => number_format(($request->get('anuidade') / $request->get('parcelas')), 2, ',', '.'),
                 'total_aulas' => $usuario->totalAulas(),
-                'matricula' => $request->get('valor_matricula'),
+                'anuidade' => $request->get('anuidade'),
                 'meses' => $request->get('meses'),
-                'mensalidades' => $request->get('mensalidades'),
+                'parcelas' => $request->get('parcelas'),
                 'data' => $request->get('data'),
                 'versao' => $versao
             ];
@@ -238,7 +238,6 @@ class ContratosController extends Controller {
             'dias' => 'required',
             'horario' => 'required',
             'vagas' => 'required',
-            'valor_mensalidade' => 'required'
         );
 
         $validator = Validator($request->all(), $rules);

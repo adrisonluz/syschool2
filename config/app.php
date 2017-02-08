@@ -57,7 +57,7 @@ return [
       | to any of the locales which will be supported by the application.
       |
      */
-    'locale' => 'pt_BR',
+    'locale' => 'pt',
     /*
       |--------------------------------------------------------------------------
       | Application Fallback Locale
@@ -68,7 +68,7 @@ return [
       | the language folders that are provided through your application.
       |
      */
-    'fallback_locale' => 'pt_BR',
+    'fallback_locale' => 'en',
     /*
       |--------------------------------------------------------------------------
       | Encryption Key

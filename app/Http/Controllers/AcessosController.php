@@ -11,6 +11,7 @@ use App\Turma;
 use App\Horario;
 use App\Chamada;
 use Illuminate\Support\Facades\Session;
+use DateTime;
 
 class AcessosController extends Controller {
 
@@ -51,7 +52,7 @@ class AcessosController extends Controller {
             $dados = array(
                 'nome' => $usuario->nome,
                 'nivel' => ($usuario->nivel == 'aluno' ? 'Aluno' : ($usuario->nivel == 'aluno_prof' ? 'Aluno/Professor' : ($usuario->nivel == 'prof_func' ? 'Proofessor/Funcionário' : ($usuario->nivel == 'sec' ? 'Secretaria' : 'não reconhecido')))),
-                'imagem' => 'perfil/' . $usuario->foto
+                'imagem' => ($usuario->foto != '' ? 'perfil/' . $usuario->foto : 'assets/img/default.png')
             );
 
             switch ($usuario->nivel) {
@@ -65,16 +66,17 @@ class AcessosController extends Controller {
                     $turmas = Horario::where('dia_semana', $diaSemana)->wherein('turma_id', $turmasId)->get();
                     if (count($turmas) > 0) {
                         foreach ($turmas as $turma) {
-                            $horaInicial = explode(':', $turma->hora_inicio);
-                            $horaFinal = explode(':', date('H:i'));
+                            $datatime1 = new DateTime($turma->hora_inicio);
+                            $datatime2 = new DateTime(date('H:i'));
 
-                            $horaIni = mktime($horaInicial[0], $horaInicial[1]);
-                            $horaFim = mktime($horaFinal[0], $horaFinal[1]);
+                            $data1  = $datatime1->format('H:i');
+                            $data2  = $datatime2->format('H:i');
 
-                            $horaDiferenca = $horaFim - $horaIni;
+                            $diff = $datatime1->diff($datatime2);
+                            $horas = $diff->h + ($diff->days * 24);
 
                             // Define 15 min como tolerancia
-                            if ($horaInicial[0] == $horaFinal[0] && abs($horaInicial[1] - $horaFinal[1]) <= 15 || abs(abs($horaInicial[0] - $horaFinal[0])) == 1 && abs($horaInicial[1] + 60 - $horaFinal[1]) <= 30) {
+                            if ($diff->i <= 15) {
                                 $chamada = new Chamada;
                                 $chamada->usuario_id = $id_usuario;
                                 $chamada->turma_id = $turma->turma_id;

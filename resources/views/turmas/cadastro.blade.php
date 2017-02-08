@@ -233,8 +233,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="cadastro">Valor da mensalidade</label>
-                    <input class="form-control formDin" name="mensalidade" placeholder="Valor">
+                    <label for="cadastro">Valor da anuidade</label>
+                    <input class="form-control formDin" name="anuidade" placeholder="Valor">
                 </div>
 
                 <div class="box-footer">

@@ -22,7 +22,7 @@
         <link href="{{ asset("/bower_components/admin-lte/plugins/iCheck/minimal/blue.css")}}" rel="stylesheet" type="text/css" />
         <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" rel="stylesheet" type="text/css" />
         <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.print.css" rel="stylesheet" type="text/css" media='print'/>
-        
+
         <link href="{{ asset("/assets/css/style.css")}}" rel="stylesheet" type="text/css" />
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -84,9 +84,9 @@
         <script src="{{ asset ("/bower_components/admin-lte/plugins/iCheck/icheck.min.js") }}" type="text/javascript"></script>
         <script src="{{ asset ("assets/fullcalendar/fullcalendar.js") }}" type="text/javascript"></script>
         <script src="{{ asset ("assets/fullcalendar/lang-all.js") }}" type="text/javascript"></script>
-        <script src="{{ asset ("/bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js") }}" type="text/javascript"></script>         
+        <script src="{{ asset ("/bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js") }}" type="text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-        
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script src="{{ asset ("/assets/js/functions.js") }}" type="text/javascript"></script>
     </body>
 </html>

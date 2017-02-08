@@ -21,10 +21,10 @@
                     </div>
                     <div class="well" style="width: 100%;">
                         {!! csrf_field() !!}
-                        <label id="zoom-value" width="100">Zoom: 2</label>
-                        <input id="zoom" onchange="Page.changeZoom();" type="range" min="10" max="30" value="20">
-                        <label id="brightness-value" width="100">Brilho: 0</label>
-                        <input id="brightness" onchange="Page.changeBrightness();" type="range" min="0" max="128" value="0">
+                        <label id="zoom-value" width="100">Zoom: 1.1</label>
+                        <input id="zoom" onchange="Page.changeZoom();" type="range" min="10" max="30" value="11">
+                        <label id="brightness-value" width="100">Brilho: 5</label>
+                        <input id="brightness" onchange="Page.changeBrightness();" type="range" min="0" max="128" value="5">
                         <label id="contrast-value" width="100">Contraste: 0</label>
                         <input id="contrast" onchange="Page.changeContrast();" type="range" min="-128" max="128" value="0">
                         <label id="threshold-value" width="100">Threshold: 0</label>

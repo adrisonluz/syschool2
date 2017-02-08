@@ -29,6 +29,11 @@ Route::group(['middlewareGroups' => ['web']], function () {
     Route::get('contratos/versoes/{id}', 'ContratosController@versoes');
     Route::resource('contratos', 'ContratosController');
 
+    /** Agenda **/
+    Route::post('agenda/addEvent','AgendaController@addEvent');
+    Route::post('agenda/getEvents','AgendaController@getEvents');
+    Route::resource('agenda','AgendaController');
+
     /*     * * Turmas ** */
     Route::get('turmas/excluir/{id}', 'TurmasController@excluir');
     Route::post('turmas/emitir-boletos', 'TurmasController@emitirBoletos');

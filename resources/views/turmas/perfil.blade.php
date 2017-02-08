@@ -43,7 +43,7 @@
                         <b>Aulas dadas:</b> <a class="pull-right">{{ $turma->aulas_dadas }}</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Valor da mensalidade:</b> <a class="pull-right">{{ $turma->mensalidade }}</a>
+                        <b>Valor da anuidade:</b> <a class="pull-right">{{ $turma->anuidade }}</a>
                         <br/>
                     </li>
                 </ul>

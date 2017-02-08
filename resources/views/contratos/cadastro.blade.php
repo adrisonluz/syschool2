@@ -33,12 +33,12 @@
                         <p>Não há alunos cadastrados.</p>
                         @endif
                     </div>
-                        
+
                     <div class="form-group col-md-6">
-                        <label for="cadastro">Valor da matricula</label>
-                        <input class="form-control formDin" name="valor_matricula" placeholder="00,00" type="text">
+                        <label for="cadastro">Valor da anuidade</label>
+                        <input class="form-control formDin" name="anuidade" placeholder="00,00" type="text">
                     </div>
-                        
+
                     <div class="form-group col-md-6">
                             <label for="cadastro">Data</label>
                             <input class="form-control formDate" name="data" placeholder="" type="text" value="{{date('d/m/Y')}}">
@@ -50,8 +50,8 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="cadastro">Qtd mensalidades</label>
-                        <input class="form-control" name="mensalidades" placeholder="Numero de mensalidades" type="text">
+                        <label for="cadastro">Qtd parcelas</label>
+                        <input class="form-control" name="parcelas" placeholder="Numero de parcelas" type="text">
                     </div>
                 </div>
                 <div class="box-footer">

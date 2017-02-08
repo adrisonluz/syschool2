@@ -17,8 +17,8 @@
         //stop = $("#stop"),
         contrast = $("#contrast"),
         contrastValue = $("#contrast-value"),
-        zoom = $("#zoom"),
-        zoomValue = $("#zoom-value"),
+        zoom = $("#zoom-value"),
+        zoomValue = $("#zoom"),
         brightness = $("#brightness"),
         brightnessValue = $("#brightness-value"),
         threshold = $("#threshold"),
@@ -34,6 +34,7 @@
     var args = {
         autoBrightnessValue: 100,
         resultFunction: function(res) {
+            decoder.pause();
             [].forEach.call(scannerLaser, function(el) {
                 $(el).fadeOut(300, function() {
                     $(el).fadeIn(300);
@@ -47,6 +48,7 @@
                  headers: {'X-CSRF-TOKEN': token},
                  type : 'POST',
                  success: function(result){
+
                     $('#modalAcessoRegistro').modal('show');
                     
                     var json = $.parseJSON(result);
@@ -65,6 +67,7 @@
                     
                     setTimeout(function(){
                         $('#modalAcessoRegistro').modal('hide');
+                        decoder.play();
                     }, 3000);
                 }
             });
@@ -126,11 +129,11 @@
     //});
     Page.changeZoom = function(a) {
         if (decoder.isInitialized()) {
-            var value = typeof a !== "undefined" ? parseFloat(a.toPrecision(2)) : zoom.val() / 10;
-            zoomValue.text(zoomValue.text().split(":")[0] + ": " + value.toString());
+            var value = typeof a !== "undefined" ? parseFloat(a.toPrecision(2)) : zoomValue.val() / 10;
+            zoom.text(zoom.text().split(":")[0] + ": " + value.toString());
             decoder.options.zoom = value;
             if (typeof a != "undefined") {
-                zoom.val(a * 10);
+                zoomValue.val(a * 10);
             }
         }
     };
