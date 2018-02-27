@@ -36,6 +36,19 @@ class HomeController extends Controller {
         $usuariosNiver = Usuario::where(['niver' => date('d-m'), 'lixeira' => null])->get();
         $boletosVenc = Boleto::where(['status' => 'vencido', 'lixeira' => null])->get();
 
+        // Se encontrar usuários fazendo aniversário, atualiza idade
+        if(count($usuariosNiver) > 0){
+            foreach($usuariosNiver as $usuarioNiver){
+                $idade = getIdade(date('d/m/Y',strtotime($usuarioNiver->nascimento)));
+
+                if($idade !== $usuarioNiver->idade){
+                    $userEdit = Usuario::find($usuarioNiver->id);
+                    $userEdit->idade = $idade;
+                    $userEdit->save();   
+                }
+            }
+        }
+
         if (Session::has('alert')) {
             $session = Session::get('alert');
         } else {
